@@ -6,6 +6,7 @@
 
 package quimica;
 import java.awt.Image;
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 /**
  *
@@ -48,4 +49,14 @@ public class PersonajePrincipal {
     public void moverAbajo(){
         posY -= SPEED;
     }
+        public int getAncho() {
+	return imagen.getIconWidth();
+    }
+	
+    public int getAlto() {
+	return imagen.getIconHeight();
+    }
+    public Rectangle getPerimetro(){
+		return new Rectangle(getPosX(),getPosY(),getAncho(),getAlto());
+	}
 }

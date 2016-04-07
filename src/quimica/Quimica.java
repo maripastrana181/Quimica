@@ -14,8 +14,8 @@ import javax.swing.JFrame;
  */
 public class Quimica extends JFrame {
     
-    private final static int WINDOW_WIDTH = 1000;
-    private final static int WINDOW_HEIGHT = 600;
+    public final static int WINDOW_WIDTH = 1000;
+    public final static int WINDOW_HEIGHT = 600;
     
     public Quimica() {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
