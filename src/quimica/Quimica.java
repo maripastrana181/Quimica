@@ -6,17 +6,31 @@
 
 package quimica;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Maribel
  */
-public class Quimica {
-
+public class Quimica extends JFrame {
+    
+    private final static int WINDOW_WIDTH = 1000;
+    private final static int WINDOW_HEIGHT = 600;
+    
+    public Quimica() {
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setTitle("Quimica");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        Quimica game = new Quimica();
+        game.setVisible(true);
     }
     
 }
