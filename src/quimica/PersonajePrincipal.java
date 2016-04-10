@@ -6,21 +6,26 @@
 
 package quimica;
 import java.awt.Image;
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 /**
  *
  * @author Maribel
  */
 public class PersonajePrincipal {
-    private final static int SPEED = 1;
+    private final static int SPEED = 16;
     private int posX;
     private int posY;
-    private ImageIcon imagen; 
+    private ImageIcon imagen;
     
-    public PersonajePrincipal(int posX, int posY, Image image){
+    public PersonajePrincipal(int posX, int posY, ImageIcon image){
         this.posX = posX;
         this.posY = posY;
-        imagen = new ImageIcon(image);
+        imagen = image;
+    }
+    
+    public Image getImage() {
+        return imagen.getImage();
     }
     
     public void setPosX(int posX){
@@ -30,22 +35,40 @@ public class PersonajePrincipal {
     public void setPosY(int posY){
         this.posY = posY;
     }
+    
     public int getPosX(){
         return posX;
     }
+    
     public int getPosY(){
         return posY;
     }
+    
     public void moverDerecha(){
         posX += SPEED;
     }
+    
     public void moverIzquierda(){
         posX -= SPEED;
     }
+    
     public void moverArriba(){
+        posY -= SPEED;
+    }
+    
+    public void moverAbajo(){
         posY += SPEED;
     }
-    public void moverAbajo(){
-        posY -= SPEED;
+    
+    public int getAncho() {
+        return imagen.getIconWidth();
+    }
+	
+    public int getAlto() {
+	return imagen.getIconHeight();
+    }
+    
+    public Rectangle getPerimetro(){
+	return new Rectangle(getPosX(),getPosY(),getAncho(),getAlto());
     }
 }
