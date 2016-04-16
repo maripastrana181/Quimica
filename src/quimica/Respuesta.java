@@ -7,55 +7,20 @@
 package quimica;
 
 import javax.swing.ImageIcon;
-import java.awt.Rectangle;
 
 /**
  *
  * @author Maribel
  */
-public class Respuesta {
-    private final static int SPEED = 1;
-    private int posX;
-    private int posY;
-    private ImageIcon imagen; 
+public class Respuesta extends GameElement {
+
+    private final static int SPEED = 10;
     
     public Respuesta(int posX, int posY, ImageIcon image){
-        this.posX = posX;
-        this.posY = posY;
-        imagen = image;
+        super(posX, posY, image);
     }
-    public int getPosX(){
-        return posX;
+    public void caer() {
+        y += SPEED;
     }
-    public int getPosY(){
-        return posY;
-    }
-    public void setPosX(int posX){
-        this.posX = posX;
-    }
-    public void setPosY(int posY){
-        this.posY = posY;
-    }
-    public void caer(){
-        if(!checaPosicion()){
-             posY -= SPEED;
-        }else{
-            posY = - imagen.getIconHeight();
-        }
-    }
-    public boolean checaPosicion(){
-        return (posY > Quimica.WINDOW_WIDTH);
-    }
-    public int getAncho() {
-	return imagen.getIconWidth();
-    }
-    public int getAlto() {
-	return imagen.getIconHeight();
-    }
-     public Rectangle getPerimetro(){
-	return new Rectangle(getPosX(),getPosY(),getAncho(),getAlto());
-     }
-    public boolean intersecta(PersonajePrincipal obj){
-	return getPerimetro().intersects(obj.getPerimetro());
-    }
+    
 }

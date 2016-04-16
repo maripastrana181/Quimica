@@ -22,19 +22,20 @@ import javax.swing.ImageIcon;
  */
 public class Quimica extends JFrame implements Runnable, KeyListener {
     
-    public final static int WINDOW_WIDTH = 1000;
-    public final static int WINDOW_HEIGHT = 600;
-    
     private static final int UP = 0;
     private static final int DOWN = 1;
     private static final int LEFT = 2;
     private static final int RIGHT = 3;
     
     private final static int LIVES = 3;
+    private final static int SLEEP_TIME = 100;
+    private final static int ANSWER_EXPECTATION = 10;
     private boolean[] pressedKeys;
     
     private int score;
     private int lives;
+    
+    private boolean answerVisible;
     
     private PersonajePrincipal personaje;
     private ArrayList<Respuesta> respuestas;
@@ -42,16 +43,21 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private Image dbImage;
     private Graphics dbg;
     
+    private static int randomInteger(int min, int max) {
+        return min + (int)(Math.random() * (max - min));   
+    }
+    
     public Quimica() {
         initUI();
         
         score = 0;
         lives = 3;
-        ImageIcon mainImage = new ImageIcon("img/main.gif");
-        personaje = new PersonajePrincipal((getWidth() - mainImage.getIconWidth()) / 2, (getHeight() - mainImage.getIconHeight()) / 2, mainImage);
+        answerVisible = true;
         
         pressedKeys = new boolean[] {false, false, false, false};
         
+        respuestas = new ArrayList<>();
+
         addKeyListener(this);
         
         Thread thread = new Thread(this);
@@ -59,30 +65,69 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     }
     
     public void initUI() {
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setTitle("Quimica");
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
+        setUndecorated(true);
+        setVisible(true);
         
+        ImageIcon mainImage = new ImageIcon("img/main.gif");
+        personaje = new PersonajePrincipal((getWidth() - mainImage.getIconWidth()) / 2, (getHeight() - mainImage.getIconHeight()) / 2, mainImage);
     }
     
     public void run() {
         while (true) {
-            if (pressedKeys[UP] && personaje.getPosY() > 0) {
+            
+            // Move main character
+            if (pressedKeys[UP] && personaje.getY() > 0) {
                 personaje.moverArriba();
             }
             
-            if (pressedKeys[DOWN] && personaje.getPosY() < getHeight() - personaje.getAlto()) {
+            if (pressedKeys[DOWN] && personaje.getY() < getHeight() - personaje.getHeight()) {
                 personaje.moverAbajo();
             }
-            if (pressedKeys[LEFT] && personaje.getPosX() > 0) {
+            
+            if (pressedKeys[LEFT] && personaje.getX() > 0) {
                 personaje.moverIzquierda();
             }
-            if (pressedKeys[RIGHT] && personaje.getPosX() < getWidth() - personaje.getAncho()) {
+            
+            if (pressedKeys[RIGHT] && personaje.getX() < getWidth() - personaje.getWidth()) {
                 personaje.moverDerecha();
             }
+            
+            // Probably create a new enemy
+            if (randomInteger(0, ANSWER_EXPECTATION) == 0) {
+                // ------------Select random image-------------------------
+                ImageIcon answerImage = new ImageIcon("img/respuesta.png");
+                // --------------------------------------------------------
+                
+                if (respuestas.size() > 0) {
+                    Respuesta ultimaRespuesta = respuestas.get(respuestas.size() - 1);
+                    Respuesta nuevaRespuesta;
+                    do {
+                        nuevaRespuesta = new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage);
+                    } while (ultimaRespuesta.collidesWith(nuevaRespuesta));
+                    respuestas.add(nuevaRespuesta);
+                } else {
+                    respuestas.add(new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage));
+                }
+            }
+            
+            int i = 0;
+            while (i < respuestas.size()) {
+                Respuesta respuesta = respuestas.get(i);
+                if (personaje.collidesWith(respuesta) || respuesta.getY() > getHeight()) {
+                    respuestas.remove(i);
+                } else {
+                    respuesta.caer();
+                    i++;
+                }
+            }
+            
             repaint();
+            
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
@@ -102,7 +147,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         dbg.fillRect(0, 0, getWidth(), getHeight());
         dbg.setColor(getForeground());
         
-        dbg.drawImage(personaje.getImage(), personaje.getPosX(), personaje.getPosY(), this);
+        // dibujar el personaje principal
+        dbg.drawImage(personaje.getImage(), personaje.getX(), personaje.getY(), this);
+        
+        // dibujar las respuestas
+        for (Respuesta respuesta : respuestas) {
+            dbg.drawImage(respuesta.getImage(), respuesta.getX(), respuesta.getY(), this);
+        }
         
         g.drawImage(dbImage, 0, 0, this);
     }
@@ -111,9 +162,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        Quimica game = new Quimica();
-        game.setVisible(true);
+        new Quimica();
     }
 
     @Override
@@ -135,6 +184,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                 break;
             case KeyEvent.VK_DOWN:
                 pressedKeys[DOWN] = true;
+                break;
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
                 break;
         }
     }
