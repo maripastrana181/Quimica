@@ -55,19 +55,19 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
         if (dbImage == null){
             dbImage = createImage (this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
-        }   
-            dbg.setColor(getBackground());
-            dbg.fillRect(0, 0, getWidth(), getHeight());
-            dbg.setColor(getForeground());
-            /*
-            BufferedImage resizedImage = new BufferedImage(getWidth(), getHeight(), type);
-            Graphics2D g = resizedImage.createGraphics();
-            g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
-            g.dispose();*/	
-            
-            dbg.drawImage(imagen.getImage(), 0, 0, this);
-            g.drawImage(dbImage, 0, 0, this);
-            
+        }
+        
+        dbg.setColor(getBackground());
+        dbg.fillRect(0, 0, getWidth(), getHeight());
+        dbg.setColor(getForeground());
+        /*
+        BufferedImage resizedImage = new BufferedImage(getWidth(), getHeight(), type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+        g.dispose();*/	
+
+        dbg.drawImage(imagen.getImage(), 0, 0, this);
+        g.drawImage(dbImage, 0, 0, this);            
     }
 
     @Override
