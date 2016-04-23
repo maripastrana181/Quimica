@@ -13,6 +13,7 @@ package quimica;
 public class Pregunta {
     
     private String sPregunta; 
+    private Respuesta rRespuestaCorrecta;
     
     public Pregunta(){
         sPregunta = "";
@@ -20,6 +21,15 @@ public class Pregunta {
     
     public Pregunta(String preg){
         sPregunta = preg; 
+    }
+    public Respuesta getRespuesta(){
+        return rRespuestaCorrecta;
+    }
+    public void setRespuesta(Respuesta resp){
+        rRespuestaCorrecta = resp; 
+    }
+    public String toString(){
+        return sPregunta; 
     }
     
 }

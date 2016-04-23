@@ -47,6 +47,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     
     private PersonajePrincipal personaje;
     private ArrayList<Respuesta> respuestas;
+    private ArrayList<Pregunta> preguntas;
+    private int preguntaActual; 
     
     private ImageIcon[] answerImages;
     private ImageIcon mainCharacter;
@@ -69,8 +71,15 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         pressedKeys = new boolean[] {false, false, false, false};
         
         respuestas = new ArrayList<>();
-
-        addKeyListener(this);
+        preguntas = new ArrayList<>();
+        
+        preguntas.add(new Pregunta("2+2"));
+        preguntas.get(0).setRespuesta(new Respuesta("4"));
+        preguntas.add(new Pregunta("3+2"));
+        preguntas.get(1).setRespuesta(new Respuesta("5"));
+        preguntaActual = 0;
+        
+       addKeyListener(this);
         
         thread = new Thread(this);
         thread.start();
@@ -127,11 +136,11 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                     Respuesta ultimaRespuesta = respuestas.get(respuestas.size() - 1);
                     Respuesta nuevaRespuesta;
                     do {
-                        nuevaRespuesta = new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage);
+                        nuevaRespuesta = new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage,"4");
                     } while (ultimaRespuesta.collidesWith(nuevaRespuesta));
                     respuestas.add(nuevaRespuesta);
                 } else {
-                    respuestas.add(new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage));
+                    respuestas.add(new Respuesta(randomInteger(0, 1 + getWidth() - answerImage.getIconWidth()), -answerImage.getIconHeight(), answerImage,"4"));
                 }
             }
             
@@ -140,11 +149,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             while (i < respuestas.size()) {
                 Respuesta respuesta = respuestas.get(i);
                 if (personaje.collidesWith(respuesta) || respuesta.getY() > getHeight()) {
-                    /*if (true) {
-                        --lives; 
-                    } else {
+                    if (respuesta.isCorrect(preguntas.get(preguntaActual))) {
                         score += SCORE_INCREASE;
-                    }*/
+                    
+                    } else {
+                        --lives;
+                    }
+                    preguntaActual = (preguntaActual + 1)  % 2;  
                     respuestas.remove(i);
                 } else {
                     respuesta.caer();
@@ -196,7 +207,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             dbg.drawString("Vidas:" + lives, 7* (int) rect.getWidth()/8 , getHeight() - (int) rect.getHeight()/4);
 
             dbg.setColor(Color.RED);
-            dbg.drawString("LALALA" + lives,(int) rect.getWidth()/2, getHeight() - (int) rect.getHeight()/2 );
+            dbg.drawString(preguntas.get(preguntaActual).toString() ,(int) rect.getWidth()/2, getHeight() - (int) rect.getHeight()/2 );
   
         g.drawImage(dbImage, 0, 0, this);
     }
