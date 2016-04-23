@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
      private Graphics dbg;
      private int nivel;
      private ImageIcon imagen;
+     private Thread thread;
     
     public AnuncioNivel(int level){
         initUI();
@@ -33,6 +35,9 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
             imagen = new ImageIcon("img/jamesrodriguez.jpg");   
         }
         addKeyListener(this);
+        //thread = new Thread(this);
+        //thread.start();
+        
         
         
     }
@@ -54,6 +59,11 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
             dbg.setColor(getBackground());
             dbg.fillRect(0, 0, getWidth(), getHeight());
             dbg.setColor(getForeground());
+            /*
+            BufferedImage resizedImage = new BufferedImage(getWidth(), getHeight(), type);
+            Graphics2D g = resizedImage.createGraphics();
+            g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+            g.dispose();*/	
             
             dbg.drawImage(imagen.getImage(), 0, 0, this);
             g.drawImage(dbImage, 0, 0, this);
@@ -82,9 +92,11 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_C:
-                System.out.println("salu2");
                 new Quimica(nivel);
                 dispose();
+                break;
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
                 break;
         }
         

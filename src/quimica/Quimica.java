@@ -35,8 +35,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
     private final static int NUMBER_OF_ANSWERS = 5;
     private final static int SCORE_INCREASE = 10;
-    private final static int SCORE_NIVEL2 = 100;
-    private final static int SCORE_NIVEL3 = 200;
+    private final static int SCORE_NIVEL2 = 10;
+    private final static int SCORE_NIVEL3 = 20;
+    private boolean sameLevel;
     private boolean[] pressedKeys;
 
     private int score;
@@ -44,7 +45,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private boolean pausa;
     private Thread thread;
     private int nivel;
-
+    private SoundClip musicaFondo1;
+    private SoundClip musicaFondo2;
+    private SoundClip musicaFondo3;
+    
+    private SoundClip musicaColisionCorrecta;
+    private SoundClip musicaColisionIncorrecta;
+    private SoundClip musicaFondo;
     private boolean answerVisible;
 
     private PersonajePrincipal personaje;
@@ -54,6 +61,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
     private ImageIcon[] answerImages;
     private ImageIcon mainCharacter;
+    
+    private Rectangle panel;
 
     private Image dbImage;
     private Graphics dbg;
@@ -77,7 +86,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             Respuesta.SPEED = 30;
             score = SCORE_NIVEL3;
         }
-
+        
+        sameLevel = true;
         lives = INITIAL_NUMBER_OF_LIVES;
         pausa = false;
         answerVisible = true;
@@ -92,6 +102,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         preguntas.add(new Pregunta("3+2"));
         preguntas.get(1).setRespuesta(new Respuesta("5"));
         preguntaActual = 0;
+       
+        musicaColisionCorrecta = new SoundClip("sounds/respuestaCorrecta.wav");
+        musicaColisionIncorrecta = new SoundClip("sounds/clic.wav");
+        musicaFondo = new SoundClip("sounds/musica.wav");
+         /*
+        musicaFondo1 = new SoundClip("sounds/musica1.mid");
+        musicaFondo2 = new SoundClip("sounds/musica2.mid");
+        musicaFondo3 = new SoundClip("sounds/musica3.mid");*/
 
         addKeyListener(this);
 
@@ -117,10 +135,12 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         answerImages[2] = new ImageIcon("img/respuesta.png");
         answerImages[3] = new ImageIcon("img/respuesta.png");
         answerImages[4] = new ImageIcon("img/respuesta.png");
+        
+        panel = new Rectangle(0, 3 * getHeight() / 4, getWidth(), getHeight() / 4);
     }
 
     public void run() {
-        while (true) {
+        while (sameLevel) {
 
             if (!pausa) {
                 // Move main character
@@ -128,7 +148,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                     personaje.moverArriba();
                 }
 
-                if (pressedKeys[DOWN] && personaje.getY() < getHeight() - personaje.getHeight()) {
+                if (pressedKeys[DOWN] && personaje.getY() < getHeight() - panel.getHeight() - personaje.getHeight()) {
                     personaje.moverAbajo();
                 }
 
@@ -166,17 +186,19 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                     if (personaje.collidesWith(respuesta)) {
                         if (respuesta.isCorrect(preguntas.get(preguntaActual))) {
                             score += SCORE_INCREASE;
+                            musicaColisionCorrecta.play();
                             if (score == SCORE_NIVEL2) {
-                                pasarNivel2();
+                                pasarNivel(2);
                             } else if (score == SCORE_NIVEL3) {
-                                pasarNivel3();
+                                pasarNivel(3);
                             }
                         } else {
+                            musicaColisionIncorrecta.play();
                             --lives;
                         }
                         preguntaActual = (preguntaActual + 1) % 2;
                         respuestas.remove(i);
-                    } else if (respuesta.getY() > getHeight()) {
+                    } else if (respuesta.getY() > getHeight() - panel.getHeight()) {
                         respuestas.remove(i);
 
                     } else {
@@ -198,14 +220,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         }
     }
 
-    public void pasarNivel2() {
-        new AnuncioNivel(2);
-        dispose();
-
-    }
-
-    public void pasarNivel3() {
-        new AnuncioNivel(3);
+    public void pasarNivel(int level) {
+        sameLevel = false;
+        new AnuncioNivel(level);
         dispose();
 
     }
@@ -231,7 +248,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
         dbg.setColor(Color.WHITE);
 
-        Rectangle panel = new Rectangle(0, 3 * getHeight() / 4, getWidth(), getHeight() / 4);
+        
         dbg.fillRect((int) panel.getX(), (int) panel.getY(), (int) panel.getWidth(), (int) panel.getHeight());
 
         dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
