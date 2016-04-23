@@ -6,8 +6,11 @@
 
 package quimica;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
@@ -30,12 +33,15 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private final static int LIVES = 3;
     private final static int SLEEP_TIME = 100;
     private final static int ANSWER_EXPECTATION = 10;
+
     private final static int NUMBER_OF_ANSWERS = 5;
     private final static int SCORE_INCREASE = 10;
     private boolean[] pressedKeys;  
     
     private int score;
     private int lives;
+    private boolean pausa; 
+    private Thread thread;
     
     private boolean answerVisible;
     
@@ -57,6 +63,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         
         score = 0;
         lives = 3;
+        pausa = false;
         answerVisible = true;
         
         pressedKeys = new boolean[] {false, false, false, false};
@@ -65,7 +72,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
         addKeyListener(this);
         
-        Thread thread = new Thread(this);
+        thread = new Thread(this);
         thread.start();
     }
     
@@ -91,7 +98,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     
     public void run() {
         while (true) {
-            
+
+         if(!pausa){ 
             // Move main character
             if (pressedKeys[UP] && personaje.getY() > 0) {
                 personaje.moverArriba();
@@ -132,11 +140,11 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             while (i < respuestas.size()) {
                 Respuesta respuesta = respuestas.get(i);
                 if (personaje.collidesWith(respuesta) || respuesta.getY() > getHeight()) {
-                    if (respuesta.isCorrect()) {
+                    /*if (true) {
                         --lives; 
                     } else {
                         score += SCORE_INCREASE;
-                    }
+                    }*/
                     respuestas.remove(i);
                 } else {
                     respuesta.caer();
@@ -152,6 +160,10 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                 Logger.getLogger(Quimica.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+         else{
+             System.out.print("");
+         }
+       }
     }
     
     @Override
@@ -160,19 +172,32 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         if (dbImage == null){
             dbImage = createImage (this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
-        }
-        dbg.setColor(getBackground());
-        dbg.fillRect(0, 0, getWidth(), getHeight());
-        dbg.setColor(getForeground());
-        
-        // dibujar el personaje principal
-        dbg.drawImage(personaje.getImage(), personaje.getX(), personaje.getY(), this);
-        
-        // dibujar las respuestas
-        for (Respuesta respuesta : respuestas) {
-            dbg.drawImage(respuesta.getImage(), respuesta.getX(), respuesta.getY(), this);
-        }
-        
+        }   
+            dbg.setColor(getBackground());
+            dbg.fillRect(0, 0, getWidth(), getHeight());
+            dbg.setColor(getForeground());
+
+             // dibujar el personaje principal
+            dbg.drawImage(personaje.getImage(), personaje.getX(), personaje.getY(), this);
+
+            // dibujar las respuestas
+            for (Respuesta respuesta : respuestas) {
+                dbg.drawImage(respuesta.getImage(), respuesta.getX(), respuesta.getY(), this);
+            }
+
+            dbg.setColor(Color.WHITE);
+            
+            Rectangle rect = new Rectangle(0, 3 * getHeight() / 4, getWidth(), getHeight()/ 4);
+            dbg.fillRect((int)rect.getX(), (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
+
+            dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+            dbg.setColor(Color.BLACK);
+            dbg.drawString("Score: " + score ,7 * (int) rect.getWidth()/8 , getHeight() - 3 * (int) rect.getHeight()/4);
+            dbg.drawString("Vidas:" + lives, 7* (int) rect.getWidth()/8 , getHeight() - (int) rect.getHeight()/4);
+
+            dbg.setColor(Color.RED);
+            dbg.drawString("LALALA" + lives,(int) rect.getWidth()/2, getHeight() - (int) rect.getHeight()/2 );
+  
         g.drawImage(dbImage, 0, 0, this);
     }
     
@@ -223,6 +248,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                 break;
             case KeyEvent.VK_DOWN:
                 pressedKeys[DOWN] = false;
+                break;
+            case KeyEvent.VK_P:
+                pausa = !pausa;
                 break;
         }
     }   

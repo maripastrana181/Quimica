@@ -22,9 +22,8 @@ public class Respuesta extends GameElement {
     public void caer() {
         y += SPEED;
     }
-    
-   /* public boolean isCorrect(Pregunta pregunta) {
-        
+    public boolean isCorrect(Pregunta pregunta) {
+        return true;
     }
-     */
+
 }
