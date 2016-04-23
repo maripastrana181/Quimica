@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
  */
 public class Respuesta extends GameElement {
 
-    private final static int SPEED = 10;
+    public static int SPEED = 10;
     private String texto; 
     
     public Respuesta(String t){
