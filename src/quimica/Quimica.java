@@ -103,7 +103,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         dbg.setColor(getForeground());
         
         dbg.drawImage(personaje.getImage(), personaje.getPosX(), personaje.getPosY(), this);
-        
+        dbg.drawString("Score: " + score ,getWidth() - 150, 570);
+        dbg.drawString("Vidas:" + lives, getWidth()- 250, 570 );
+        dbg.drawRect(50, 100,570,200);
         g.drawImage(dbImage, 0, 0, this);
     }
     
