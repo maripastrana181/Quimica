@@ -23,4 +23,8 @@ public class Respuesta extends GameElement {
         y += SPEED;
     }
     
+   /* public boolean isCorrect(Pregunta pregunta) {
+        
+    }
+     */
 }

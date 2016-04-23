@@ -30,7 +30,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private final static int LIVES = 3;
     private final static int SLEEP_TIME = 100;
     private final static int ANSWER_EXPECTATION = 10;
-    private boolean[] pressedKeys;
+    private final static int NUMBER_OF_ANSWERS = 5;
+    private final static int SCORE_INCREASE = 10;
+    private boolean[] pressedKeys;  
     
     private int score;
     private int lives;
@@ -39,6 +41,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     
     private PersonajePrincipal personaje;
     private ArrayList<Respuesta> respuestas;
+    
+    private ImageIcon[] answerImages;
+    private ImageIcon mainCharacter;
     
     private Image dbImage;
     private Graphics dbg;
@@ -73,8 +78,15 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         setUndecorated(true);
         setVisible(true);
         
-        ImageIcon mainImage = new ImageIcon("img/main.gif");
-        personaje = new PersonajePrincipal((getWidth() - mainImage.getIconWidth()) / 2, (getHeight() - mainImage.getIconHeight()) / 2, mainImage);
+        mainCharacter = new ImageIcon("img/main.gif");
+        personaje = new PersonajePrincipal((getWidth() - mainCharacter.getIconWidth()) / 2, (getHeight() - mainCharacter.getIconHeight()) / 2, mainCharacter);
+        
+        answerImages = new ImageIcon[NUMBER_OF_ANSWERS];
+        answerImages[0] = new ImageIcon("img/respuesta.png");
+        answerImages[1] = new ImageIcon("img/respuesta.png");
+        answerImages[2] = new ImageIcon("img/respuesta.png");
+        answerImages[3] = new ImageIcon("img/respuesta.png");
+        answerImages[4] = new ImageIcon("img/respuesta.png");     
     }
     
     public void run() {
@@ -100,7 +112,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             // Probably create a new enemy
             if (randomInteger(0, ANSWER_EXPECTATION) == 0) {
                 // ------------Select random image-------------------------
-                ImageIcon answerImage = new ImageIcon("img/respuesta.png");
+                ImageIcon answerImage = answerImages[randomInteger(0, NUMBER_OF_ANSWERS)];
                 // --------------------------------------------------------
                 
                 if (respuestas.size() > 0) {
@@ -115,10 +127,16 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                 }
             }
             
+            // revisar la colision de respuestas
             int i = 0;
             while (i < respuestas.size()) {
                 Respuesta respuesta = respuestas.get(i);
                 if (personaje.collidesWith(respuesta) || respuesta.getY() > getHeight()) {
+                    if (respuesta.isCorrect()) {
+                        --lives; 
+                    } else {
+                        score += SCORE_INCREASE;
+                    }
                     respuestas.remove(i);
                 } else {
                     respuesta.caer();
