@@ -103,13 +103,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         // opciones predefinidas de moleculas resultantes
         moleculasResultantes = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_QUESTIONS; ++i) {
-            moleculasResultantes.add(new Molecula(i, new ImageIcon("img/res_" + i + ".png")));
+            moleculasResultantes.add(new Molecula(i, new ImageIcon("img/rres_" + i + ".png")));
         }
         
         preguntas = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_QUESTIONS; ++i) {
             Molecula r1 = new Molecula(i, new ImageIcon("img/r1_" + i + ".png"));
-            Molecula r2 = new Molecula(i, new ImageIcon("img/r2_" + i + ".png"));
+            Molecula r2 = new Molecula(i, new ImageIcon("img/rr2_" + i + ".png"));
             preguntas.add(new Pregunta(r1, r2, moleculasResultantes.get(i)));
         }
         
@@ -239,7 +239,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             dbImage = createImage(this.getSize().width, this.getSize().height);
             dbg = dbImage.getGraphics();
         }
-        dbg.setColor(getBackground());
+        dbg.setColor(Color.WHITE);
         dbg.fillRect(0, 0, getWidth(), getHeight());
         dbg.setColor(getForeground());
 
@@ -264,6 +264,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             dbg.setColor(Color.BLACK);
             dbg.drawString("Score: " + score, 7 * (int) panel.getWidth() / 8, getHeight() - 3 * (int) panel.getHeight() / 4);
             dbg.drawString("Vidas:" + lives, 7 * (int) panel.getWidth() / 8, getHeight() - (int) panel.getHeight() / 4);
+            dbg.setColor(Color.BLACK);
+            dbg.drawLine(0, getHeight() - (int)panel.getHeight(), getWidth(), getHeight() - (int)panel.getHeight());
         }
         
         Molecula r1 = null;
