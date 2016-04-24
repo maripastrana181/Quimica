@@ -19,28 +19,24 @@ import javax.swing.JFrame;
  *
  * @author Ricky
  */
-public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
+public class AnuncioNivel extends JFrame implements KeyListener {
+    
      private Image dbImage;
      private Graphics dbg;
      private int nivel;
      private ImageIcon imagen;
-     private Thread thread;
     
     public AnuncioNivel(int level){
         initUI();
         nivel = level;
-        if( level == 2){
+        if (level == 2) {
             imagen = new ImageIcon("img/realmadrid.jpg");
-        }else if(level == 3){
+        } else {
             imagen = new ImageIcon("img/jamesrodriguez.jpg");   
         }
-        addKeyListener(this);
-        //thread = new Thread(this);
-        //thread.start();
-        
-        
-        
+        addKeyListener(this);        
     }
+    
      public void initUI() {
         setTitle("Quimica");
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -49,7 +45,8 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
         setResizable(true);
         setUndecorated(true);
         setVisible(true);
-     }
+    }
+    
     public void paint(Graphics g) {
         // Inicializan el DoubleBuffer
         if (dbImage == null){
@@ -60,27 +57,15 @@ public class AnuncioNivel extends JFrame implements Runnable, KeyListener {
         dbg.setColor(getBackground());
         dbg.fillRect(0, 0, getWidth(), getHeight());
         dbg.setColor(getForeground());
-        /*
+        /*  
         BufferedImage resizedImage = new BufferedImage(getWidth(), getHeight(), type);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
         g.dispose();*/	
-
-        dbg.drawImage(imagen.getImage(), 0, 0, this);
-        g.drawImage(dbImage, 0, 0, this);            
-    }
-
-    @Override
-    public void run() {
-        while(true){
-            repaint();
-            
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Quimica.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (imagen != null) {
+            dbg.drawImage(imagen.getImage(), 0, 0, this);
         }
+        g.drawImage(dbImage, 0, 0, this);
     }
 
     @Override

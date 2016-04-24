@@ -16,26 +16,15 @@ import javax.swing.ImageIcon;
 public abstract class GameElement {
     protected int x;
     protected int y;
-    protected ImageIcon imageIcon;
     
     public GameElement() {
         x = 0;
         y = 0;
-        imageIcon = null;
     }
     
-    public GameElement (int posX, int posY, ImageIcon image){
+    public GameElement (int posX, int posY){
         this.x = posX;
         this.y = posY;
-        imageIcon = image;
-    }
-    
-    public Image getImage() {
-        return imageIcon.getImage();
-    }
-    
-    public void setImage(ImageIcon image) {
-        this.imageIcon = image;
     }
     
     public void setX(int x){
@@ -54,19 +43,13 @@ public abstract class GameElement {
         return y;
     }
     
-    public int getWidth() {
-        return imageIcon.getIconWidth();
-    }
+    public abstract Image getImage();
+    
+    public abstract int getWidth();
 	
-    public int getHeight() {
-	return imageIcon.getIconHeight();
-    }
+    public abstract int getHeight();
     
-    private Rectangle getRectangle(){
-	return new Rectangle(x, y, imageIcon.getIconWidth(), imageIcon.getIconHeight());
-    }
+    protected abstract Rectangle getRectangle();
     
-    public boolean collidesWith(GameElement obj){
-	return getRectangle().intersects(obj.getRectangle());
-    }
+    public abstract boolean collidesWith(GameElement obj);
 }

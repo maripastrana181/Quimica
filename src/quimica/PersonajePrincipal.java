@@ -5,6 +5,8 @@
  */
 
 package quimica;
+import java.awt.Image;
+import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 /**
  *
@@ -13,9 +15,11 @@ import javax.swing.ImageIcon;
 public class PersonajePrincipal extends GameElement {
     
     private final static int SPEED = 20;
+    private ImageIcon imageIcon;
     
     public PersonajePrincipal(int posX, int posY, ImageIcon image){
-        super(posX, posY, image);
+        super(posX, posY);
+        imageIcon = image;
     }
     
     public void moverDerecha(){
@@ -32,5 +36,30 @@ public class PersonajePrincipal extends GameElement {
     
     public void moverAbajo(){
         y += SPEED;
+    }
+    
+    @Override
+    public Image getImage() {
+        return imageIcon.getImage();
+    }
+    
+    @Override
+    public int getWidth() {
+        return imageIcon.getIconWidth();
+    }
+	
+    @Override
+    public int getHeight() {
+	return imageIcon.getIconHeight();
+    }
+    
+    @Override
+    protected Rectangle getRectangle(){
+	return new Rectangle(x, y, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+    }
+    
+    @Override
+    public boolean collidesWith(GameElement obj){
+	return getRectangle().intersects(obj.getRectangle());
     }
 }

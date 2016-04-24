@@ -12,24 +12,22 @@ package quimica;
  */
 public class Pregunta {
     
-    private String sPregunta; 
-    private Respuesta rRespuestaCorrecta;
+    private Molecula reactivo1;
+    private Molecula reactivo2;
+    private Molecula resultante;
+
     
-    public Pregunta(){
-        sPregunta = "";
-    }
-    
-    public Pregunta(String preg){
-        sPregunta = preg; 
-    }
-    public Respuesta getRespuesta(){
-        return rRespuestaCorrecta;
-    }
-    public void setRespuesta(Respuesta resp){
-        rRespuestaCorrecta = resp; 
-    }
-    public String toString(){
-        return sPregunta; 
+    public Pregunta(Molecula r1, Molecula r2, Molecula resp){
+        reactivo1 = r1;
+        reactivo2 = r2;
+        resultante = resp;
     }
     
+    public Molecula getMoleculaResultante(){
+        return resultante;
+    }
+    
+    public int getIndex() {
+        return resultante.getIndex();
+    }
 }
