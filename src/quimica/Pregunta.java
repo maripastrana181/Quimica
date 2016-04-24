@@ -23,6 +23,14 @@ public class Pregunta {
         resultante = resp;
     }
     
+    public Molecula getReactivo1() {
+        return reactivo1;
+    }
+    
+    public Molecula getReactivo2() {
+        return reactivo2;
+    }
+    
     public Molecula getMoleculaResultante(){
         return resultante;
     }

@@ -35,14 +35,15 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private final static int NUMBER_OF_QUESTIONS = 1;
 
     private final static int SCORE_INCREASE = 10;
-    private final static int SCORE_NIVEL2 = 10;
-    private final static int SCORE_NIVEL3 = 20;
+    private final static int SCORE_NIVEL2 = 100;
+    private final static int SCORE_NIVEL3 = 200;
     private boolean sameLevel;
     private final boolean[] pressedKeys;
 
     private int score;
     private int lives;
     private boolean pausa;
+    private boolean swapQuestion;
     private final Thread thread;
     
     //private SoundClip musicaFondo1;
@@ -95,6 +96,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         sameLevel = true;
         lives = INITIAL_NUMBER_OF_LIVES;
         pausa = false;
+        swapQuestion = false;
 
         pressedKeys = new boolean[] {false, false, false, false};
         
@@ -202,6 +204,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                         }
                         preguntaActual = randomInteger(0, preguntas.size());
                         resultantesEnPantalla.remove(i);
+                        swapQuestion = randomInteger(0, 2) == 0;
                     } else if (resultante.getY() > getHeight() - panel.getHeight()) {
                         resultantesEnPantalla.remove(i);
                     } else {
@@ -249,22 +252,32 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         // dibujar las moleculasResultantes
         
         if (resultantesEnPantalla != null) {
-        for (Resultante r : resultantesEnPantalla) {
-            dbg.drawImage(r.getImage(), r.getX(), r.getY(), this);
-        }
+            for (Resultante r : resultantesEnPantalla) {
+                dbg.drawImage(r.getImage(), r.getX(), r.getY(), this);
+            }
         }
         
         if (panel != null) {
-        dbg.setColor(Color.WHITE);
-        dbg.fillRect((int) panel.getX(), (int) panel.getY(), (int) panel.getWidth(), (int) panel.getHeight());
-        dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
-        dbg.setColor(Color.BLACK);
-        dbg.drawString("Score: " + score, 7 * (int) panel.getWidth() / 8, getHeight() - 3 * (int) panel.getHeight() / 4);
-        dbg.drawString("Vidas:" + lives, 7 * (int) panel.getWidth() / 8, getHeight() - (int) panel.getHeight() / 4);
+            dbg.setColor(Color.WHITE);
+            dbg.fillRect((int) panel.getX(), (int) panel.getY(), (int) panel.getWidth(), (int) panel.getHeight());
+            dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+            dbg.setColor(Color.BLACK);
+            dbg.drawString("Score: " + score, 7 * (int) panel.getWidth() / 8, getHeight() - 3 * (int) panel.getHeight() / 4);
+            dbg.drawString("Vidas:" + lives, 7 * (int) panel.getWidth() / 8, getHeight() - (int) panel.getHeight() / 4);
         }
-
-        //dbg.setColor(Color.RED);
-        //dbg.drawString(preguntas.get(preguntaActual).toString(), (int) panel.getWidth() / 2, getHeight() - (int) panel.getHeight() / 2);
+        
+        Molecula r1 = null;
+        Molecula r2 = null;
+        
+        if (swapQuestion) {
+            r1 = preguntas.get(preguntaActual).getReactivo1();
+            r2 = preguntas.get(preguntaActual).getReactivo2();
+        } else {
+            r2 = preguntas.get(preguntaActual).getReactivo1();
+            r1 = preguntas.get(preguntaActual).getReactivo2();
+        }
+        dbg.drawImage(r1.getImage(), (int)(panel.getWidth() / 2) - r1.getWidth(), getHeight() - (int)(panel.getHeight() / 2) - r1.getHeight() / 2, this);
+        dbg.drawImage(r2.getImage(), (int)(panel.getWidth() / 2) + r2.getWidth(), getHeight() - (int)(panel.getHeight() / 2)- r1.getHeight() / 2, this);
         
         g.drawImage(dbImage, 0, 0, this);
     }
