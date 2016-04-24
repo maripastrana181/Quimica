@@ -145,7 +145,16 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         setUndecorated(true);
         setVisible(true);
     }
-
+    
+    public boolean rechazarNuevoResultante(Resultante res) {
+        for (Resultante r : resultantesEnPantalla) {
+            if (r.collidesWith(res)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void run() {
         while (sameLevel) {
             if (!pausa) {
@@ -175,10 +184,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                         Resultante ultimoResultante = resultantesEnPantalla.get(resultantesEnPantalla.size() - 1);
                         Resultante nuevoResultante;
                         do {
-                            int r = randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth());
-                            System.out.println("(0, " + (1 + getWidth() - nuevaMolecula.getWidth()) + ") = " + r);
-                            nuevoResultante = new Resultante(r, -nuevaMolecula.getHeight(), nuevaMolecula);
-                        } while (ultimoResultante.collidesWith(nuevoResultante));
+                            nuevoResultante = new Resultante(randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth()), -nuevaMolecula.getHeight(), nuevaMolecula);
+                        } while (rechazarNuevoResultante(nuevoResultante));
                         resultantesEnPantalla.add(nuevoResultante);
                     } else {
                         resultantesEnPantalla.add(new Resultante(randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth()), -nuevaMolecula.getHeight(), nuevaMolecula));
@@ -268,18 +275,20 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             dbg.drawLine(0, getHeight() - (int)panel.getHeight(), getWidth(), getHeight() - (int)panel.getHeight());
         }
         
-        Molecula r1 = null;
-        Molecula r2 = null;
-        
-        if (swapQuestion) {
-            r1 = preguntas.get(preguntaActual).getReactivo1();
-            r2 = preguntas.get(preguntaActual).getReactivo2();
-        } else {
-            r2 = preguntas.get(preguntaActual).getReactivo1();
-            r1 = preguntas.get(preguntaActual).getReactivo2();
+        if (preguntas != null && preguntas.size() > 0) {
+            Molecula r1 = null;
+            Molecula r2 = null;
+
+            if (swapQuestion) {
+                r1 = preguntas.get(preguntaActual).getReactivo1();
+                r2 = preguntas.get(preguntaActual).getReactivo2();
+            } else {
+                r2 = preguntas.get(preguntaActual).getReactivo1();
+                r1 = preguntas.get(preguntaActual).getReactivo2();
+            }
+            dbg.drawImage(r1.getImage(), (int)(panel.getWidth() / 2) - r1.getWidth(), getHeight() - (int)(panel.getHeight() / 2) - r1.getHeight() / 2, this);
+            dbg.drawImage(r2.getImage(), (int)(panel.getWidth() / 2) + r2.getWidth(), getHeight() - (int)(panel.getHeight() / 2)- r1.getHeight() / 2, this);
         }
-        dbg.drawImage(r1.getImage(), (int)(panel.getWidth() / 2) - r1.getWidth(), getHeight() - (int)(panel.getHeight() / 2) - r1.getHeight() / 2, this);
-        dbg.drawImage(r2.getImage(), (int)(panel.getWidth() / 2) + r2.getWidth(), getHeight() - (int)(panel.getHeight() / 2)- r1.getHeight() / 2, this);
         
         g.drawImage(dbImage, 0, 0, this);
     }
