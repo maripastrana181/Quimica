@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Quimica">
+  <ClassDiagramComponents>
+    <Class name="AnuncioNivel" package="quimica" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="dbImage" type="Image" visibility="private"/>
+        <Field name="dbg" type="Graphics" visibility="private"/>
+        <Field name="nivel" type="int" visibility="private"/>
+        <Field name="imagen" type="ImageIcon" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="level"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initUI" returnType="void" visibility="public"/>
+        <Method name="paint" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="keyTyped" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+        <Method name="keyPressed" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+        <Method name="keyReleased" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="GameElement" package="quimica" visibility="public" isAbstract="true" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="x" type="int" visibility="protected"/>
+        <Field name="y" type="int" visibility="protected"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="int" name="posX"/>
+          <Argument type="int" name="posY"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="setX" returnType="void" visibility="public">
+          <Argument type="int" name="x"/>
+        </Method>
+        <Method name="setY" returnType="void" visibility="public">
+          <Argument type="int" name="y"/>
+        </Method>
+        <Method name="getX" returnType="int" visibility="public"/>
+        <Method name="getY" returnType="int" visibility="public"/>
+        <Method name="getImage" returnType="Image" visibility="public" isAbstract="true"/>
+        <Method name="getWidth" returnType="int" visibility="public" isAbstract="true"/>
+        <Method name="getHeight" returnType="int" visibility="public" isAbstract="true"/>
+        <Method name="getRectangle" returnType="Rectangle" visibility="protected" isAbstract="true"/>
+        <Method name="collidesWith" returnType="boolean" visibility="public" isAbstract="true">
+          <Argument type="GameElement" name="obj"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Molecula" package="quimica" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="index" type="int" visibility="private"/>
+        <Field name="imageIcon" type="ImageIcon" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="i"/>
+          <Argument type="ImageIcon" name="image"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Molecula" name="m"/>
+        </Method>
+        <Method name="getImage" returnType="Image" visibility="public"/>
+        <Method name="getWidth" returnType="int" visibility="public"/>
+        <Method name="getHeight" returnType="int" visibility="public"/>
+        <Method name="getIndex" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="PersonajePrincipal" package="quimica" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="SPEED" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="imageIcon" type="ImageIcon" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="posX"/>
+          <Argument type="int" name="posY"/>
+          <Argument type="ImageIcon" name="image"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="moverDerecha" returnType="void" visibility="public"/>
+        <Method name="moverIzquierda" returnType="void" visibility="public"/>
+        <Method name="moverArriba" returnType="void" visibility="public"/>
+        <Method name="moverAbajo" returnType="void" visibility="public"/>
+        <Method name="getImage" returnType="Image" visibility="public"/>
+        <Method name="getWidth" returnType="int" visibility="public"/>
+        <Method name="getHeight" returnType="int" visibility="public"/>
+        <Method name="getRectangle" returnType="Rectangle" visibility="protected"/>
+        <Method name="collidesWith" returnType="boolean" visibility="public">
+          <Argument type="GameElement" name="obj"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Pregunta" package="quimica" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="reactivo1" type="Molecula" visibility="private"/>
+        <Field name="reactivo2" type="Molecula" visibility="private"/>
+        <Field name="resultante" type="Molecula" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Molecula" name="r1"/>
+          <Argument type="Molecula" name="r2"/>
+          <Argument type="Molecula" name="resp"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getReactivo1" returnType="Molecula" visibility="public"/>
+        <Method name="getReactivo2" returnType="Molecula" visibility="public"/>
+        <Method name="getMoleculaResultante" returnType="Molecula" visibility="public"/>
+        <Method name="getIndex" returnType="int" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Quimica" package="quimica" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="UP" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="DOWN" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="LEFT" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="RIGHT" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="INITIAL_NUMBER_OF_LIVES" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SLEEP_TIME" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="ANSWER_EXPECTATION" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="NUMBER_OF_QUESTIONS" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SCORE_INCREASE" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SCORE_NIVEL2" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="SCORE_NIVEL3" type="int" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="sameLevel" type="boolean" visibility="private"/>
+        <Field name="pressedKeys" type="boolean[]" visibility="private" isFinal="true"/>
+        <Field name="score" type="int" visibility="private"/>
+        <Field name="lives" type="int" visibility="private"/>
+        <Field name="pausa" type="boolean" visibility="private"/>
+        <Field name="swapQuestion" type="boolean" visibility="private"/>
+        <Field name="thread" type="Thread" visibility="private" isFinal="true"/>
+        <Field name="musicaColisionCorrecta" type="SoundClip" visibility="private" isFinal="true"/>
+        <Field name="musicaColisionIncorrecta" type="SoundClip" visibility="private" isFinal="true"/>
+        <Field name="musicaFondo" type="SoundClip" visibility="private" isFinal="true"/>
+        <Field name="personaje" type="PersonajePrincipal" visibility="private" isFinal="true"/>
+        <Field name="moleculasResultantes" type="ArrayList&lt;Molecula&gt;" visibility="private" isFinal="true"/>
+        <Field name="preguntas" type="ArrayList&lt;Pregunta&gt;" visibility="private" isFinal="true"/>
+        <Field name="resultantesEnPantalla" type="ArrayList&lt;Resultante&gt;" visibility="private" isFinal="true"/>
+        <Field name="preguntaActual" type="int" visibility="private"/>
+        <Field name="panel" type="Rectangle" visibility="private" isFinal="true"/>
+        <Field name="dbImage" type="Image" visibility="private"/>
+        <Field name="dbg" type="Graphics" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="nivel"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="randomInteger" returnType="int" visibility="private" isStatic="true">
+          <Argument type="int" name="min"/>
+          <Argument type="int" name="max"/>
+        </Method>
+        <Method name="initUI" returnType="void" visibility="public"/>
+        <Method name="rechazarNuevoResultante" returnType="boolean" visibility="public">
+          <Argument type="Resultante" name="res"/>
+        </Method>
+        <Method name="run" returnType="void" visibility="public"/>
+        <Method name="pasarNivel" returnType="void" visibility="public">
+          <Argument type="int" name="level"/>
+        </Method>
+        <Method name="paint" returnType="void" visibility="public">
+          <Argument type="Graphics" name="g"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+        <Method name="keyTyped" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+        <Method name="keyPressed" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+        <Method name="keyReleased" returnType="void" visibility="public">
+          <Argument type="KeyEvent" name="e"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Resultante" package="quimica" visibility="public" xPosition="1820.0" yPosition="20.0">
+      <Fields>
+        <Field name="SPEED" type="int" visibility="public" isStatic="true"/>
+        <Field name="molecula" type="Molecula" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="posX"/>
+          <Argument type="int" name="posY"/>
+          <Argument type="Molecula" name="m"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="caer" returnType="void" visibility="public"/>
+        <Method name="isAnswer" returnType="boolean" visibility="public">
+          <Argument type="Pregunta" name="pregunta"/>
+        </Method>
+        <Method name="getImage" returnType="Image" visibility="public"/>
+        <Method name="getWidth" returnType="int" visibility="public"/>
+        <Method name="getHeight" returnType="int" visibility="public"/>
+        <Method name="getRectangle" returnType="Rectangle" visibility="protected"/>
+        <Method name="collidesWith" returnType="boolean" visibility="public">
+          <Argument type="GameElement" name="obj"/>
+        </Method>
+        <Method name="isCorrect" returnType="boolean" visibility="public">
+          <Argument type="Pregunta" name="pregunta"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="SoundClip" package="quimica" visibility="public" xPosition="2120.0" yPosition="20.0">
+      <Fields>
+        <Field name="sample" type="AudioInputStream" visibility="private"/>
+        <Field name="clip" type="Clip" visibility="private"/>
+        <Field name="looping" type="boolean" visibility="private"/>
+        <Field name="repeat" type="int" visibility="private"/>
+        <Field name="filename" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="filename"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="setLooping" returnType="void" visibility="public">
+          <Argument type="boolean" name="looping"/>
+        </Method>
+        <Method name="setRepeat" returnType="void" visibility="public">
+          <Argument type="int" name="repeat"/>
+        </Method>
+        <Method name="setFilename" returnType="void" visibility="public">
+          <Argument type="String" name="filename"/>
+        </Method>
+        <Method name="getClip" returnType="Clip" visibility="public"/>
+        <Method name="getLooping" returnType="boolean" visibility="public"/>
+        <Method name="getRepeat" returnType="int" visibility="public"/>
+        <Method name="getFilename" returnType="String" visibility="public"/>
+        <Method name="getURL" returnType="URL" visibility="private">
+          <Argument type="String" name="filename"/>
+        </Method>
+        <Method name="isLoaded" returnType="boolean" visibility="public"/>
+        <Method name="load" returnType="boolean" visibility="public">
+          <Argument type="String" name="audiofile"/>
+        </Method>
+        <Method name="play" returnType="void" visibility="public"/>
+        <Method name="stop" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <UseRelation source="quimica.Quimica" target="quimica.Resultante" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="musicaColisionCorrecta" source="quimica.Quimica" target="quimica.SoundClip" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="personaje" source="quimica.Quimica" target="quimica.PersonajePrincipal" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="moleculasResultantes" source="quimica.Quimica" target="quimica.Molecula" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Molecula&gt;"/>
+    <UseRelation source="quimica.Molecula" target="quimica.Molecula" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="quimica.Pregunta" target="quimica.Molecula" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="quimica.GameElement" target="quimica.GameElement" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <IsRelation name="is" source="quimica.PersonajePrincipal" target="quimica.GameElement"/>
+    <HasRelation name="reactivo1" source="quimica.Pregunta" target="quimica.Molecula" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="reactivo2" source="quimica.Pregunta" target="quimica.Molecula" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="quimica.PersonajePrincipal" target="quimica.GameElement" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="quimica.Resultante" target="quimica.Pregunta" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="resultante" source="quimica.Pregunta" target="quimica.Molecula" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="musicaFondo" source="quimica.Quimica" target="quimica.SoundClip" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="molecula" source="quimica.Resultante" target="quimica.Molecula" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="quimica.Resultante" target="quimica.GameElement" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="preguntas" source="quimica.Quimica" target="quimica.Pregunta" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Pregunta&gt;"/>
+    <HasRelation name="resultantesEnPantalla" source="quimica.Quimica" target="quimica.Resultante" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Resultante&gt;"/>
+    <IsRelation name="is" source="quimica.Resultante" target="quimica.GameElement"/>
+    <HasRelation name="musicaColisionIncorrecta" source="quimica.Quimica" target="quimica.SoundClip" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

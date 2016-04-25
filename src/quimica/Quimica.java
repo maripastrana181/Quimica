@@ -108,7 +108,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         
         preguntas = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_QUESTIONS; ++i) {
-            Molecula r1 = new Molecula(i, new ImageIcon("img/r1_" + i + ".png"));
+            Molecula r1 = new Molecula(i, new ImageIcon("img/rr1_" + i + ".png"));
             Molecula r2 = new Molecula(i, new ImageIcon("img/rr2_" + i + ".png"));
             preguntas.add(new Pregunta(r1, r2, moleculasResultantes.get(i)));
         }
@@ -286,8 +286,21 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                 r2 = preguntas.get(preguntaActual).getReactivo1();
                 r1 = preguntas.get(preguntaActual).getReactivo2();
             }
-            dbg.drawImage(r1.getImage(), (int)(panel.getWidth() / 2) - r1.getWidth(), getHeight() - (int)(panel.getHeight() / 2) - r1.getHeight() / 2, this);
-            dbg.drawImage(r2.getImage(), (int)(panel.getWidth() / 2) + r2.getWidth(), getHeight() - (int)(panel.getHeight() / 2)- r1.getHeight() / 2, this);
+            
+            dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 80));
+            
+            int halfWidth = getWidth() / 2;
+            int yHalfPanel = getHeight() - (int)panel.getHeight() / 2;
+            int r1Width = r1.getWidth();
+            int r1HalfHeight = r1.getHeight() / 2;
+            int r2Width = r2.getWidth();
+            int r2HalfHeight = r2.getHeight() / 2;
+            int plusWidth = dbg.getFontMetrics().stringWidth("+");
+            
+            dbg.drawImage(r1.getImage(), halfWidth - r1Width, yHalfPanel - r1HalfHeight, this);
+            dbg.drawImage(r2.getImage(), halfWidth + plusWidth, yHalfPanel - r1HalfHeight , this);
+            
+            dbg.drawString("+", halfWidth, yHalfPanel);
         }
         
         g.drawImage(dbImage, 0, 0, this);
