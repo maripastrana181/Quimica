@@ -52,9 +52,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     //private SoundClip musicaFondo2;
     //private SoundClip musicaFondo3;
     
-    private final SoundClip musicaColisionCorrecta;
-    private final SoundClip musicaColisionIncorrecta;
-    private final SoundClip musicaFondo;
+    //private final SoundClip musicaColisionCorrecta;
+    //private final SoundClip musicaColisionIncorrecta;
+    //private final SoundClip musicaFondo;
 
     private final PersonajePrincipal personaje;
     
@@ -119,14 +119,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
         resultantesEnPantalla = new ArrayList<>();
         
-        ImageIcon mainCharacter = new ImageIcon("img/main.gif");
+        ImageIcon mainCharacter = new ImageIcon("img/main3.png");
         personaje = new PersonajePrincipal((getWidth() - mainCharacter.getIconWidth()) / 2, (getHeight() - mainCharacter.getIconHeight()) / 2, mainCharacter);
         panel = new Rectangle(0, (int)(3 * getHeight() / 4.0), getWidth(), getHeight() / 4);
         
-        musicaColisionCorrecta = new SoundClip("sounds/respuestaCorrecta.wav");
-        musicaColisionIncorrecta = new SoundClip("sounds/clic.wav");
-        musicaFondo = new SoundClip("sounds/musica.wav");
-        musicaFondo.play();
+        //musicaColisionCorrecta = new SoundClip("sounds/respuestaCorrecta.wav");
+        //musicaColisionIncorrecta = new SoundClip("sounds/clic.wav");
+        //musicaFondo = new SoundClip("sounds/musica.wav");
+        //musicaFondo.play();
         /*
         musicaFondo1 = new SoundClip("sounds/musica1.mid");
         musicaFondo2 = new SoundClip("sounds/musica2.mid");
@@ -201,14 +201,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                     if (personaje.collidesWith(resultante)) {
                         if (resultante.isCorrect(preguntas.get(preguntaActual))) {
                             score += SCORE_INCREASE;
-                            musicaColisionCorrecta.play();
+                            //musicaColisionCorrecta.play();
                             if (score == SCORE_NIVEL2) {
                                 pasarNivel(2);
                             } else if (score == SCORE_NIVEL3) {
                                 pasarNivel(3);
                             }
                         } else {
-                            musicaColisionIncorrecta.play();
+                            //musicaColisionIncorrecta.play();
                             --lives;
                         }
                         preguntaActual = randomInteger(0, preguntas.size());
@@ -236,14 +236,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
     public void pasarNivel(int level) {
         sameLevel = false;
-        musicaFondo.stop();
+        //musicaFondo.stop();
         ImageIcon imagenNivel;
         
        if(level == 2){
-            imagenNivel = new ImageIcon("img/jamesrodriguez.jpg");
+            imagenNivel = new ImageIcon("img/nivel2Mari.png");
            
        }else{
-          imagenNivel = new ImageIcon("img/jrealmadrid.jpg");
+          imagenNivel = new ImageIcon("img/nivel3Mari.png");
        }
         new AnuncioNivel(imagenNivel,level);
         dispose();
@@ -320,8 +320,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ImageIcon imagenMenu = new ImageIcon("img/prueba.png");
-        ImageIcon imagenInstrucciones = new ImageIcon("img/realmadrid.jpg");
+        ImageIcon imagenMenu = new ImageIcon("img/menuuMari.png");
+        ImageIcon imagenInstrucciones = new ImageIcon("img/instruccionesMari.png");
         new Menu(imagenMenu,imagenInstrucciones);
     } 
 
