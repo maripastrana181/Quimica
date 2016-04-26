@@ -18,10 +18,10 @@ public class Menu extends Anuncio {
     ImageIcon imagenMenu;
     ImageIcon imagenInstrucciones;
     
-    public Menu(ImageIcon menu, ImageIcon instrucciones) {
-        super(menu);
-        imagenMenu = menu;
-        imagenInstrucciones = instrucciones;
+    public Menu() {
+        super(new ImageIcon("img/menuuMari.png"));
+        imagenMenu = imagen;
+        imagenInstrucciones = new ImageIcon("img/instruccionesMari.png");
     }
     
     @Override

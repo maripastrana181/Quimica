@@ -27,15 +27,10 @@ public class Resultante extends GameElement {
         y += SPEED;
     }
     
-    public boolean isAnswer(Pregunta pregunta) {
-       return molecula.equals(pregunta.getMoleculaResultante());
-    }
-
     @Override
     public Image getImage() {
         return molecula.getImage();
     }
-
 
     @Override
     public int getWidth() {
@@ -59,5 +54,9 @@ public class Resultante extends GameElement {
     
     public boolean isCorrect(Pregunta pregunta) {
         return pregunta.getIndex() == molecula.getIndex();
+    }
+    
+    public int getIndex() {
+        return molecula.getIndex();
     }
 }

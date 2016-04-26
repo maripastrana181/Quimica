@@ -5,30 +5,18 @@
  */
 package quimica;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 /**
  *
  * @author Ricky
  */
-public class AnuncioNivel extends Anuncio {
-    
-    private int level;
-    
-    public AnuncioNivel(ImageIcon image, int nivel) {
-        super(image); 
-        level = nivel;
+public class AnuncioFin extends Anuncio {
+    public AnuncioFin() {
+        super(new ImageIcon("img/gameover.png"));
     }
     
-    @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_C:
@@ -39,7 +27,5 @@ public class AnuncioNivel extends Anuncio {
                 System.exit(0);
                 break;
         }
-        
     }
-
 }
