@@ -31,16 +31,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
 
     private final static int INITIAL_NUMBER_OF_LIVES = 3;
     private final static int SLEEP_TIME = 60;
-    private final static int ANSWER_EXPECTATION = 10;
-    private final static int NUMBER_OF_QUESTIONS = 1;
+    private static int ANSWER_EXPECTATION;
+    private final static int NUMBER_OF_QUESTIONS = 3;
 
     private final static int SCORE_INCREASE = 10;
     private final static int SCORE_NIVEL2 = 100;
     private final static int SCORE_NIVEL3 = 200;
     private boolean sameLevel;
     private final boolean[] pressedKeys;
-    
-  
 
     private int score;
     private int lives;
@@ -55,7 +53,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private final SoundClip musicaColisionCorrecta;
     private final SoundClip musicaColisionIncorrecta;
     private final SoundClip musicaFondo;
-
+    
     private final PersonajePrincipal personaje;
     
     // arraylist predefinido de posibles moleculas resultantes
@@ -83,15 +81,18 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         switch (nivel) {
             case 1:
                 Resultante.SPEED = 10;
+                ANSWER_EXPECTATION = 10;
                 score = 0;
                 break;
             case 2:
                 Resultante.SPEED = 20;
                 score = SCORE_NIVEL2;
+                ANSWER_EXPECTATION = 5;
                 break;
             default:
                 Resultante.SPEED = 30;
                 score = SCORE_NIVEL3;
+                ANSWER_EXPECTATION = 3;
                 break;
         }
         
@@ -105,13 +106,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         // opciones predefinidas de moleculas resultantes
         moleculasResultantes = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_QUESTIONS; ++i) {
-            moleculasResultantes.add(new Molecula(i, new ImageIcon("img/rres_" + i + ".png")));
+            moleculasResultantes.add(new Molecula(i, new ImageIcon("img/rsz_r" + i + "_res.png")));
         }
         
         preguntas = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_QUESTIONS; ++i) {
-            Molecula r1 = new Molecula(i, new ImageIcon("img/rr1_" + i + ".png"));
-            Molecula r2 = new Molecula(i, new ImageIcon("img/rr2_" + i + ".png"));
+            Molecula r1 = new Molecula(i, new ImageIcon("img/rsz_r" + i + "_1.png"));
+            Molecula r2 = new Molecula(i, new ImageIcon("img/rsz_r" + i + "_2.png"));
             preguntas.add(new Pregunta(r1, r2, moleculasResultantes.get(i)));
         }
         
@@ -148,13 +149,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         setVisible(true);
     }
     
-    public boolean rechazarNuevoResultante(Resultante res) {
+    public boolean aceptarNuevoResultante(Resultante res) {
         for (Resultante r : resultantesEnPantalla) {
             if (r.collidesWith(res)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
     
     public void run() {
@@ -181,16 +182,14 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
                     // ------------Select random molecule------------------------------------------------------------
                     Molecula nuevaMolecula = moleculasResultantes.get(randomInteger(0, moleculasResultantes.size()));
                     // ----------------------------------------------------------------------------------------------
-
+                    
+                    Resultante nuevoResultante = new Resultante(randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth()), -nuevaMolecula.getHeight(), nuevaMolecula);
                     if (resultantesEnPantalla.size() > 0) {
-                        Resultante ultimoResultante = resultantesEnPantalla.get(resultantesEnPantalla.size() - 1);
-                        Resultante nuevoResultante;
-                        do {
-                            nuevoResultante = new Resultante(randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth()), -nuevaMolecula.getHeight(), nuevaMolecula);
-                        } while (rechazarNuevoResultante(nuevoResultante));
-                        resultantesEnPantalla.add(nuevoResultante);
+                        if (aceptarNuevoResultante(nuevoResultante)) {
+                            resultantesEnPantalla.add(nuevoResultante);
+                        }
                     } else {
-                        resultantesEnPantalla.add(new Resultante(randomInteger(0, 1 + getWidth() - nuevaMolecula.getWidth()), -nuevaMolecula.getHeight(), nuevaMolecula));
+                        resultantesEnPantalla.add(nuevoResultante);
                     }
                 }
                 // revisar la colision de resultantesEnPantalla
@@ -238,14 +237,13 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         sameLevel = false;
         musicaFondo.stop();
         ImageIcon imagenNivel;
-        
-       if(level == 2){
-            imagenNivel = new ImageIcon("img/jamesrodriguez.jpg");
-           
-       }else{
-          imagenNivel = new ImageIcon("img/jrealmadrid.jpg");
-       }
-        new AnuncioNivel(imagenNivel,level);
+     
+        if(level == 2){
+          imagenNivel = new ImageIcon("img/jamesrodriguez.jpg");   
+        } else {
+          imagenNivel = new ImageIcon("img/realmadrid.jpg");
+        }
+        new AnuncioNivel(imagenNivel, level);
         dispose();
     }
 
@@ -269,7 +267,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         // dibujar las moleculasResultantes
         
         if (resultantesEnPantalla != null) {
-            for (Resultante r : resultantesEnPantalla) {
+            ArrayList<Resultante> resus = new ArrayList<>(resultantesEnPantalla);
+            for (Resultante r : resus) {
                 dbg.drawImage(r.getImage(), r.getX(), r.getY(), this);
             }
         }
@@ -277,9 +276,9 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
         if (panel != null) {
             dbg.setColor(Color.WHITE);
             dbg.fillRect((int) panel.getX(), (int) panel.getY(), (int) panel.getWidth(), (int) panel.getHeight());
-            dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 20));
+            dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 40));
             dbg.setColor(Color.BLACK);
-            dbg.drawString("Score: " + score, 7 * (int) panel.getWidth() / 8, getHeight() - 3 * (int) panel.getHeight() / 4);
+            dbg.drawString("Puntos: " + score, 7 * (int) panel.getWidth() / 8, getHeight() - 3 * (int) panel.getHeight() / 4);
             dbg.drawString("Vidas:" + lives, 7 * (int) panel.getWidth() / 8, getHeight() - (int) panel.getHeight() / 4);
             dbg.setColor(Color.BLACK);
             dbg.drawLine(0, getHeight() - (int)panel.getHeight(), getWidth(), getHeight() - (int)panel.getHeight());
@@ -298,7 +297,6 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             }
             
             dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 80));
-            System.out.println(getWidth() + " " + getHeight());
             int halfWidth = getWidth() / 2;
             int yHalfPanel = getHeight() - (int)panel.getHeight() / 2;
             int r1Width = r1.getWidth();
@@ -306,11 +304,12 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             int r2Width = r2.getWidth();
             int r2HalfHeight = r2.getHeight() / 2;
             int plusWidth = dbg.getFontMetrics().stringWidth("+");
+            int plusHeight = -30;
             
-            dbg.drawImage(r1.getImage(), halfWidth - r1Width, yHalfPanel - r1HalfHeight, this);
-            dbg.drawImage(r2.getImage(), halfWidth + plusWidth, yHalfPanel - r1HalfHeight , this);
+            dbg.drawImage(r1.getImage(), halfWidth - r1Width - plusWidth / 2 - 100, yHalfPanel - r1HalfHeight, this);
+            dbg.drawImage(r2.getImage(), halfWidth + plusWidth / 2 + 100, yHalfPanel - r2HalfHeight, this);
             
-            dbg.drawString("+", halfWidth, yHalfPanel);
+            dbg.drawString("+", halfWidth - plusWidth / 2, yHalfPanel - plusHeight / 2);
         }
         
         g.drawImage(dbImage, 0, 0, this);
