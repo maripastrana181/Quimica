@@ -39,6 +39,8 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     private final static int SCORE_NIVEL3 = 200;
     private boolean sameLevel;
     private final boolean[] pressedKeys;
+    
+  
 
     private int score;
     private int lives;
@@ -235,7 +237,15 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
     public void pasarNivel(int level) {
         sameLevel = false;
         musicaFondo.stop();
-        new AnuncioNivel(level);
+        ImageIcon imagenNivel;
+        
+       if(level == 2){
+            imagenNivel = new ImageIcon("img/jamesrodriguez.jpg");
+           
+       }else{
+          imagenNivel = new ImageIcon("img/jrealmadrid.jpg");
+       }
+        new AnuncioNivel(imagenNivel,level);
         dispose();
     }
 
@@ -288,7 +298,7 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
             }
             
             dbg.setFont(new Font("Baskerville Old Face", Font.BOLD, 80));
-            
+            System.out.println(getWidth() + " " + getHeight());
             int halfWidth = getWidth() / 2;
             int yHalfPanel = getHeight() - (int)panel.getHeight() / 2;
             int r1Width = r1.getWidth();
@@ -310,8 +320,10 @@ public class Quimica extends JFrame implements Runnable, KeyListener {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new Quimica(1);
-    }
+        ImageIcon imagenMenu = new ImageIcon("img/prueba.png");
+        ImageIcon imagenInstrucciones = new ImageIcon("img/realmadrid.jpg");
+        new Menu(imagenMenu,imagenInstrucciones);
+    } 
 
     @Override
     public void keyTyped(KeyEvent e) {

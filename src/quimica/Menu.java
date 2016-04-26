@@ -5,13 +5,7 @@
  */
 package quimica;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -19,21 +13,31 @@ import javax.swing.JFrame;
  *
  * @author Ricky
  */
-public class AnuncioNivel extends Anuncio {
+public class Menu extends Anuncio {
     
-    private int level;
+    ImageIcon imagenMenu;
+    ImageIcon imagenInstrucciones;
     
-    public AnuncioNivel(ImageIcon image, int nivel) {
-        super(image); 
-        level = nivel;
+    public Menu(ImageIcon menu, ImageIcon instrucciones) {
+        super(menu);
+        imagenMenu = menu;
+        imagenInstrucciones = instrucciones;
     }
     
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_C:
-                new Quimica(level);
+                new Quimica(1);
                 dispose();
+                break;
+            case KeyEvent.VK_I:
+                imagen = imagenInstrucciones;
+                repaint();
+                break;
+            case KeyEvent.VK_R:
+                imagen = imagenMenu;
+                repaint();
                 break;
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);
@@ -41,5 +45,5 @@ public class AnuncioNivel extends Anuncio {
         }
         
     }
-
+    
 }
